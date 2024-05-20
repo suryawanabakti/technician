@@ -3,10 +3,13 @@ import { Link, usePage } from "@inertiajs/react";
 import {
     Box,
     BoxIcon,
+    Check,
     Database,
     Home,
+    ListOrderedIcon,
     Package2,
     PanelLeft,
+    Pickaxe,
     Settings,
     Users2,
 } from "lucide-react";
@@ -82,33 +85,169 @@ export default function Authenticated({
                                 Dashboard
                             </TooltipContent>
                         </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href={route("admin.users.index")}
-                                    className={`flex h-9 w-9 items-center justify-center ${
-                                        route().current("admin.users*")
-                                            ? "bg-accent"
-                                            : ""
-                                    }  rounded-lg text-${
-                                        route().current("admin.users*")
-                                            ? "accent"
-                                            : "muted"
-                                    }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
-                                >
-                                    <Users2 className="h-5 w-5" />
-                                    <span className="sr-only">Users</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Users</TooltipContent>
-                        </Tooltip>
 
-                        <div
-                            className={`flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
-                        >
-                            <Database className="h-5 w-5" />
-                            <span className="sr-only">Dashboard</span>
-                        </div>
+                        {user.roles[0].name == "admin" && (
+                            <>
+                                {" "}
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={route("admin.users.index")}
+                                            className={`flex h-9 w-9 items-center justify-center ${
+                                                route().current("admin.users*")
+                                                    ? "bg-accent"
+                                                    : ""
+                                            }  rounded-lg text-${
+                                                route().current("admin.users*")
+                                                    ? "accent"
+                                                    : "muted"
+                                            }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
+                                        >
+                                            <Users2 className="h-5 w-5" />
+                                            <span className="sr-only">
+                                                Customer
+                                            </span>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right">
+                                        Users
+                                    </TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={route(
+                                                "admin.technicians.index"
+                                            )}
+                                            className={`flex h-9 w-9 items-center justify-center ${
+                                                route().current(
+                                                    "admin.technicians*"
+                                                )
+                                                    ? "bg-accent"
+                                                    : ""
+                                            }  rounded-lg text-${
+                                                route().current(
+                                                    "admin.technicians*"
+                                                )
+                                                    ? "accent"
+                                                    : "muted"
+                                            }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
+                                        >
+                                            <Pickaxe className="h-5 w-5" />
+                                            <span className="sr-only">
+                                                Technician
+                                            </span>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right">
+                                        Technician
+                                    </TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={route("admin.approve.index")}
+                                            className={`flex h-9 w-9 items-center justify-center ${
+                                                route().current(
+                                                    "admin.approve*"
+                                                )
+                                                    ? "bg-accent"
+                                                    : ""
+                                            }  rounded-lg text-${
+                                                route().current(
+                                                    "admin.technicians*"
+                                                )
+                                                    ? "accent"
+                                                    : "muted"
+                                            }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
+                                        >
+                                            <Check className="h-5 w-5" />
+                                            <span className="sr-only">
+                                                Approve Order
+                                            </span>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right">
+                                        Approve
+                                    </TooltipContent>
+                                </Tooltip>
+                            </>
+                        )}
+
+                        {user.roles[0].name == "user" && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={route("orders.create")}
+                                        className={`flex h-9 w-9 items-center justify-center ${
+                                            route().current("orders.create*")
+                                                ? "bg-accent"
+                                                : ""
+                                        }  rounded-lg text-${
+                                            route().current("orders.create*")
+                                                ? "accent"
+                                                : "muted"
+                                        }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
+                                    >
+                                        <Pickaxe className="h-5 w-5" />
+                                        <span className="sr-only">
+                                            Technician
+                                        </span>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right">
+                                    Technician
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
+                        {user.roles[0].name == "user" && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={route("orders.index")}
+                                        className={`flex h-9 w-9 items-center justify-center ${
+                                            route().current("orders.index*")
+                                                ? "bg-accent"
+                                                : ""
+                                        }  rounded-lg text-${
+                                            route().current("orders.index*")
+                                                ? "accent"
+                                                : "muted"
+                                        }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
+                                    >
+                                        <ListOrderedIcon className="h-5 w-5" />
+                                        <span className="sr-only">Order</span>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right">
+                                    Order
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
+                        {user.roles[0].name == "technician" && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={route("approve.index")}
+                                        className={`flex h-9 w-9 items-center justify-center ${
+                                            route().current("approve.index*")
+                                                ? "bg-accent"
+                                                : ""
+                                        }  rounded-lg text-${
+                                            route().current("approve.index*")
+                                                ? "accent"
+                                                : "muted"
+                                        }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
+                                    >
+                                        <ListOrderedIcon className="h-5 w-5" />
+                                        <span className="sr-only">Order</span>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right">
+                                    Order
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
                     </nav>
                     <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
                         <Tooltip>
@@ -163,7 +302,7 @@ export default function Authenticated({
                                         className="flex items-center gap-4 px-2.5 text-foreground"
                                     >
                                         <Users2 className="h-5 w-5" />
-                                        Users
+                                        Customer
                                     </Link>
                                 </nav>
                             </SheetContent>

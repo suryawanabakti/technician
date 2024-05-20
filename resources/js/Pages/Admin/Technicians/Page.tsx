@@ -49,11 +49,11 @@ import {
 } from "lucide-react";
 import { FormEventHandler, useState } from "react";
 
-export default function Users({
+export default function Technicians({
     auth,
-    users,
+    technicians,
     search,
-}: PageProps<{ users: any; search?: string }>) {
+}: PageProps<{ technicians: any; search?: string }>) {
     const [user, setUser] = useState(null);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const { data, setData, get } = useForm({
@@ -61,7 +61,7 @@ export default function Users({
     });
     const submitSearch: FormEventHandler = (e) => {
         e.preventDefault();
-        get(route("admin.users.index"));
+        get(route("admin.technicians.index"));
     };
 
     const handleShowDeleteDialog = (show: boolean, user: any) => {
@@ -95,18 +95,18 @@ export default function Users({
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Users</BreadcrumbPage>
+                            <BreadcrumbPage>Technicians</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
             }
         >
-            <Head title="Users" />
+            <Head title="Technicians" />
 
             <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 ">
                 <div className="flex items-center">
                     <div className="ml-auto flex items-center gap-2">
-                        <DropdownMenu>
+                        {/* <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="outline"
@@ -132,7 +132,7 @@ export default function Users({
                                     Archived
                                 </DropdownMenuCheckboxItem>
                             </DropdownMenuContent>
-                        </DropdownMenu>
+                        </DropdownMenu> */}
                         <Button
                             size="sm"
                             variant="outline"
@@ -143,22 +143,22 @@ export default function Users({
                                 Export
                             </span>
                         </Button>
-                        <Button size="sm" className="h-7 gap-1" asChild>
-                            <Link href={route("admin.users.create")}>
+                        {/* <Button size="sm" className="h-7 gap-1" asChild>
+                            <Link href={route("admin.technicians.create")}>
                                 <PlusCircle className="h-3.5 w-3.5" />
                                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                    Add User
+                                    Add Technician
                                 </span>
                             </Link>
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Users</CardTitle>
+                        <CardTitle>Technicians</CardTitle>
                         <CardDescription>
-                            {users.meta.from}-{users.meta.to} of{" "}
-                            {users.meta.total} user
+                            {technicians.meta.from}-{technicians.meta.to} of{" "}
+                            {technicians.meta.total} user
                         </CardDescription>
                     </CardHeader>
 
@@ -175,17 +175,17 @@ export default function Users({
                                         Email
                                     </TableHead>
                                     <TableHead className="hidden sm:table-cell">
-                                        Roles
+                                        Keahlian
                                     </TableHead>
                                     <TableHead className="hidden sm:table-cell">
-                                        Created At
+                                        Deskripsi keahlian
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {users.data.map((user: User) => (
+                                {technicians.data.map((technician: any) => (
                                     <TableRow
-                                        key={user.id}
+                                        key={technician.id}
                                         className=" hover:bg-slate-200"
                                     >
                                         <TableCell>
@@ -209,8 +209,8 @@ export default function Users({
                                                     <DropdownMenuItem asChild>
                                                         <Link
                                                             href={route(
-                                                                "admin.users.edit",
-                                                                user.id
+                                                                "admin.technicians.edit",
+                                                                technician.id
                                                             )}
                                                         >
                                                             Edit
@@ -220,7 +220,7 @@ export default function Users({
                                                         onClick={() =>
                                                             handleShowDeleteDialog(
                                                                 true,
-                                                                user
+                                                                technician
                                                             )
                                                         }
                                                     >
@@ -234,31 +234,34 @@ export default function Users({
                                                 alt="User image"
                                                 className="aspect-square rounded-md object-cover"
                                                 height="64"
-                                                src={user.photo}
+                                                src={technician.user.photo}
                                                 width="64"
                                             />
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            {user.name}
+                                            {technician.user.name}
                                         </TableCell>
                                         <TableCell className="hidden sm:table-cell">
-                                            {user.email}
+                                            {technician.user.email}
                                         </TableCell>
                                         <TableCell className="hidden sm:table-cell">
-                                            {user.roles.map((role: any) => {
-                                                return (
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="capitalize"
-                                                        key={role.id}
-                                                    >
-                                                        {role.name}
-                                                    </Badge>
-                                                );
-                                            })}
+                                            {technician.skill?.name}
                                         </TableCell>
                                         <TableCell className="hidden sm:table-cell">
-                                            {user.created_at}
+                                            {technician.skill_description}
+                                            {technician.skills.map(
+                                                (skill: any) => {
+                                                    return (
+                                                        <Badge
+                                                            variant="outline"
+                                                            className="capitalize"
+                                                            key={skill.skill.id}
+                                                        >
+                                                            {skill.skill.name}
+                                                        </Badge>
+                                                    );
+                                                }
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -267,13 +270,13 @@ export default function Users({
                     </CardContent>
                     <CardFooter>
                         <SimplePagination
-                            links={users.links}
+                            links={technicians.links}
                             search={search}
-                            currentPage={users.meta.current_page}
+                            currentPage={technicians.meta.current_page}
                         />
                         {/* <PaginationComponent
-                                links={users.meta.links}
-                                currentPage={users.meta.current_page}
+                                links={technicians.meta.links}
+                                currentPage={technicians.meta.current_page}
                             /> */}
                     </CardFooter>
                 </Card>
@@ -283,7 +286,7 @@ export default function Users({
                     user={user}
                     showDeleteDialog={showDeleteDialog}
                     setShowDeleteDialog={setShowDeleteDialog}
-                    role="users"
+                    role="technicians"
                 />
             )}
         </AuthenticatedLayout>

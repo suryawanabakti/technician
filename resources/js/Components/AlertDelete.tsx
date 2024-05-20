@@ -15,10 +15,12 @@ export default function AlertDelete({
     showDeleteDialog = false,
     user,
     setShowDeleteDialog,
+    role,
 }: {
     showDeleteDialog: boolean;
     user: any;
     setShowDeleteDialog: any;
+    role: string;
 }) {
     return (
         <AlertDialog open={showDeleteDialog} key={user.id}>
@@ -43,7 +45,7 @@ export default function AlertDelete({
                     </AlertDialogCancel>
                     <AlertDialogAction asChild>
                         <Link
-                            href={route("admin.users.destroy", user.id)}
+                            href={route(`admin.${role}.destroy`, user.id)}
                             method="delete"
                             as="button"
                             onFinish={() => setShowDeleteDialog(false)}

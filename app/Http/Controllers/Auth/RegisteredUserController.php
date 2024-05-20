@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Skill;
+use App\Models\Technicians;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +22,14 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        $skills = Skill::all()->map(function ($skill) {
+            return [
+                "value" => $skill->id,
+                "label" => $skill->name,
+            ];
+        });
+
+        return Inertia::render('Auth/Register', ["skills" => $skills]);
     }
 
     /**
@@ -28,19 +37,28 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required']
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ])->assignRole($request->role);
+
+        if ($request->role == 'technician') {
+            Technicians::create([
+                'user_id' => $user->id,
+                'skill_id' => $request->skill
+            ]);
+        }
 
         event(new Registered($user));
 
