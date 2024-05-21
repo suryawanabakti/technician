@@ -7,6 +7,7 @@ export interface User {
     created_at: string;
     photo: string;
     address: string;
+    phone: string;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

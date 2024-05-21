@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ApproveController as AdminApproveController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
@@ -44,8 +45,10 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::get('/orders/user/{user}', [OrderController::class, 'show'])->name('orders.show');
 
     Route::get('/approve', [ApproveController::class, 'index'])->name('approve.index');
     Route::patch('/approve/success/{order}', [ApproveController::class, 'success'])->name('approve.success');

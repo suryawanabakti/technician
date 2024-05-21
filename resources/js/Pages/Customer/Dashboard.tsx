@@ -6,7 +6,7 @@ import {
 } from "@/Components/ui/breadcrumb";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 
 export default function Dashboard({ auth }: PageProps) {
     return (
@@ -26,7 +26,16 @@ export default function Dashboard({ auth }: PageProps) {
         >
             <Head title="Dashboard" />
 
-            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8"></main>
+            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+                {!auth.user.address && (
+                    <p>
+                        Harap melengkapi data diri anda{" "}
+                        <Link href="/profile" className="underline">
+                            Klik disini !
+                        </Link>
+                    </p>
+                )}
+            </main>
         </AuthenticatedLayout>
     );
 }

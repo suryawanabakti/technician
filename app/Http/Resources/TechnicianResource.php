@@ -20,7 +20,7 @@ class TechnicianResource extends JsonResource
             "skills" => $this->skills,
             "created_at" => $this->created_at->format('d M Y H:i'),
             "skill" => $this->skill,
-            "skill_description" => $this->skill_description
+            "skill_description" => str()->limit($this->skill_description, '40', '...')
         ];
     }
 }

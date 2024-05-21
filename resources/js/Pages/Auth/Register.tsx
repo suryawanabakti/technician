@@ -1,4 +1,4 @@
-import { useEffect, FormEventHandler } from "react";
+import { useEffect, FormEventHandler, useState } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Button } from "@/Components/ui/button";
@@ -23,6 +23,18 @@ export default function Register({
     canResetPassword: boolean;
     skills: any;
 }) {
+    const [showSkill, setShowSkill] = useState(false);
+    const handleChangeRole = (e: any) => {
+        if (e == "user") {
+            setShowSkill(false);
+        }
+        if (e == "technician") {
+            setShowSkill(true);
+        }
+
+        setData("role", e);
+    };
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         email: "",
@@ -81,7 +93,7 @@ export default function Register({
                                 <Label htmlFor="role">Role</Label>
                                 <RadioGroup
                                     defaultValue="option-one"
-                                    onValueChange={(e) => setData("role", e)}
+                                    onValueChange={(e) => handleChangeRole(e)}
                                     orientation="vertical"
                                 >
                                     <div className="flex items-center space-x-2">
@@ -105,13 +117,20 @@ export default function Register({
                                 </RadioGroup>
                                 <InputError message={errors.role} />
                             </div>
-                            <div className="grid gap-2">
+                            <div
+                                className="grid gap-2"
+                                style={
+                                    showSkill
+                                        ? { display: "block" }
+                                        : { display: "none" }
+                                }
+                            >
                                 <Label htmlFor="name">Skill</Label>
                                 <Select
                                     onValueChange={(e) => setData("skill", e)}
                                 >
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Theme" />
+                                        <SelectValue placeholder="Choose  a skill" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {skills.map((data: any) => {

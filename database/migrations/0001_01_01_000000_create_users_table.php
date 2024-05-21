@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('gender', ['male', 'female'])->default('male');
             $table->string('photo')->nullable();
+            $table->string('phone')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
