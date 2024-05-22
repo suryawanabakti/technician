@@ -6,16 +6,30 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 import { FormEventHandler } from "react";
 import { PageProps } from "@/types";
+import { Textarea } from "@/Components/ui/textarea";
+import { Label } from "@/Components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/Components/ui/select";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
     status,
     className = "",
+    technician,
+    skills,
 }: {
     mustVerifyEmail: boolean;
     status?: string;
     className?: string;
+    technician?: any;
+    skills?: any;
 }) {
+    console.log(technician);
     const user = usePage<PageProps>().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
@@ -24,6 +38,8 @@ export default function UpdateProfileInformation({
             email: user.email,
             address: user.address,
             phone: user.phone,
+            skill_id: technician?.skill_id,
+            skill_description: technician?.skill_description,
         });
 
     const submit: FormEventHandler = (e) => {
@@ -84,12 +100,59 @@ export default function UpdateProfileInformation({
                         className="mt-1 block w-full"
                         value={data.phone}
                         onChange={(e) => setData("phone", e.target.value)}
-                        isFocused
                         autoComplete="phone"
                     />
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>
+                {user.roles[0].name == "technician" && (
+                    <>
+                        <div className="">
+                            <Label htmlFor="name">Skill</Label>
+                            <Select
+                                onValueChange={(e) => setData("skill_id", e)}
+                                defaultValue={data.skill_id}
+                            >
+                                <SelectTrigger className="w-[100%] mt-1">
+                                    <SelectValue placeholder="Choose  a skill" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {skills.map((data: any) => {
+                                        return (
+                                            <SelectItem value={data.id}>
+                                                {data.name}
+                                            </SelectItem>
+                                        );
+                                    })}
+                                </SelectContent>
+                            </Select>
+                            <InputError message={errors.skill_id} />
+                        </div>
+
+                        <div>
+                            <InputLabel
+                                htmlFor="skill_description"
+                                value="Skill Description"
+                            />
+
+                            <Textarea
+                                id="skill_description"
+                                className="mt-1 block w-full"
+                                value={data.skill_description}
+                                onChange={(e) =>
+                                    setData("skill_description", e.target.value)
+                                }
+                                autoComplete="skill_description"
+                            />
+
+                            <InputError
+                                className="mt-2"
+                                message={errors.skill_description}
+                            />
+                        </div>
+                    </>
+                )}
+
                 <div>
                     <InputLabel htmlFor="address" value="Address" />
 

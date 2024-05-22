@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Skill;
+use App\Models\Technicians;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,9 +20,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'technician' => Technicians::where('user_id', auth()->id())->first() ?? null,
+            "skills" => Skill::all(),
         ]);
     }
 
@@ -36,7 +41,12 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
-
+        if (auth()->user()->hasRole('technician')) {
+            Technicians::where('user_id', auth()->id())->update([
+                'skill_id' => $request->skill_id,
+                'skill_description' => $request->skill_description
+            ]);
+        }
         return Redirect::route('profile.edit');
     }
 

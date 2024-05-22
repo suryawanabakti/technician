@@ -80,59 +80,63 @@ export default function Create({
                         </Button>
                     </form>
                 </center>
-                <h1>Rekomendasi</h1>
-                <div className="grid gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-4">
-                    {rekomendasi.data.map((data: any) => {
-                        return (
-                            <Card className="overflow-hidden">
-                                <CardHeader>
-                                    <CardTitle>{data.skill?.name}</CardTitle>
-                                    <CardDescription>
-                                        {data.user.name}
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="grid gap-2">
-                                        <img
-                                            alt="Product image"
-                                            className="aspect-square w-full rounded-md object-cover"
-                                            height="300"
-                                            src={data.user?.photo}
-                                            width="300"
-                                        />
-                                        {data.skill_description}
-                                    </div>
-                                </CardContent>
-                                <CardFooter>
-                                    <Button asChild className="w-100 me-2">
-                                        <Link
-                                            href={route("orders.store")}
-                                            data={{
-                                                technician_id: data.id,
-                                            }}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Order
-                                        </Link>
-                                    </Button>
-                                    <Button asChild className="w-100">
-                                        <Link
-                                            href={route(
-                                                "orders.show",
-                                                data.user.id
-                                            )}
-                                        >
-                                            Detail
-                                        </Link>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        );
-                    })}
-                </div>
-                <h1>Teknisi lainnya</h1>
+                {rekomendasi.data.length > 0 && <b>Rekomendasi tukang</b>}
+                {rekomendasi.data.length > 0 && (
+                    <div className="grid gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-4">
+                        {rekomendasi.data.map((data: any) => {
+                            return (
+                                <Card className="overflow-hidden">
+                                    <CardHeader>
+                                        <CardTitle>
+                                            {data.skill?.name}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {data.user.name}
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="grid gap-2">
+                                            <img
+                                                alt="Product image"
+                                                className="aspect-square w-full rounded-md object-cover"
+                                                height="300"
+                                                src={data.user?.photo}
+                                                width="300"
+                                            />
+                                            {data.skill_description}
+                                        </div>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button asChild className="w-100 me-2">
+                                            <Link
+                                                href={route("orders.store")}
+                                                data={{
+                                                    technician_id: data.id,
+                                                }}
+                                                method="post"
+                                                as="button"
+                                            >
+                                                Order
+                                            </Link>
+                                        </Button>
+                                        <Button asChild className="w-100">
+                                            <Link
+                                                href={route(
+                                                    "orders.show",
+                                                    data.user.id
+                                                )}
+                                            >
+                                                Detail
+                                            </Link>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            );
+                        })}
+                    </div>
+                )}
 
+                <b>Teknisi</b>
                 <div className="grid gap-4 md:grid-cols-3 md:gap-8 lg:grid-cols-4">
                     {technicians.data.map((data: any) => {
                         return (

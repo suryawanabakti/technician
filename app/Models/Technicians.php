@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Technicians extends Model
 {
     use HasFactory;
-    public $with = ['user', 'skills'];
+    public $with = ['user', 'skills', 'skill'];
     protected $guarded = ['id'];
     protected $keyType = 'string';
 

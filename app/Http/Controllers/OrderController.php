@@ -14,7 +14,26 @@ class OrderController extends Controller
 {
     public function show(User $user)
     {
-        return inertia("Orders/Show", ["user" => $user]);
+
+        $orderSmiliarty = Technicians::where('user_id', $user->id)->first();
+        $data = [];
+
+        foreach (Technicians::all() as $row) {
+            $data[$row->id] = $this->pre_process($row->skill->name . ' ' . $row->skill_description);
+        }
+        $cbrs = new Cbrs();
+        $cbrs->create_index($data);
+        $cbrs->idf();
+        $w = $cbrs->weight();
+        $r = $cbrs->similarity($orderSmiliarty->id);
+        $n = 8;
+        foreach ($r as $k => $row) {
+            $rekomendasi[] =
+                Technicians::where('id', $k)->first();
+        }
+        $rekomendasi =   TechnicianResource::collection(collect($rekomendasi ?? [])->take(8));
+        $technician = Technicians::where('user_id', $user->id)->first();
+        return inertia("Orders/Show", ["user" => $user, "rekomendasi" => $rekomendasi, "technician" => $technician]);
     }
     public function index()
     {
@@ -57,10 +76,31 @@ class OrderController extends Controller
             }
         }
 
-        $rekomendasi =   TechnicianResource::collection(collect($rekomendasi)->take(8));
+        $rekomendasi =   TechnicianResource::collection(collect($rekomendasi ?? [])->take(8));
+
 
         $technicians = TechnicianResource::collection($query->paginate(8));
+        if ($request->search) {
+            $data = [];
+            foreach (Technicians::all() as $row) {
+                $data[$row->id] = $this->pre_process($row->user->name . ' ' . $row->skill->name . ' ' . $row->skill_description);
+            }
+            $data["search"] = $request->search;
+            $cbrs = new Cbrs();
+            $cbrs->create_index($data);
+            $cbrs->idf();
+            $w = $cbrs->weight();
+            $r = $cbrs->similarity("search");
 
+            array_shift($r);
+            $rekomendasi = [];
+            foreach ($r as $k => $row) {
+                $rekomendasi[] =
+                    Technicians::where('id', $k)->first();
+            }
+        }
+
+        $rekomendasi =   TechnicianResource::collection(collect($rekomendasi ?? [])->take(8));
         return inertia("Orders/Create", ["technicians" => $technicians, "search" => $request->search ?? "", "rekomendasi" => $rekomendasi]);
     }
 

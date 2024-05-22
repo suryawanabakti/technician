@@ -129,7 +129,7 @@ export default function Register({
                                 <Select
                                     onValueChange={(e) => setData("skill", e)}
                                 >
-                                    <SelectTrigger className="w-[180px]">
+                                    <SelectTrigger className="w-[100%] mt-1">
                                         <SelectValue placeholder="Choose  a skill" />
                                     </SelectTrigger>
                                     <SelectContent>

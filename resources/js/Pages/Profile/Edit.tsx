@@ -17,7 +17,9 @@ export default function Edit({
     auth,
     mustVerifyEmail,
     status,
-}: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
+    technician,
+    skills,
+}: any) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -49,6 +51,8 @@ export default function Edit({
                         mustVerifyEmail={mustVerifyEmail}
                         status={status}
                         className="max-w-xl"
+                        technician={technician}
+                        skills={skills}
                     />
                 </div>
 

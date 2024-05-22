@@ -11,6 +11,7 @@ import {
     Card,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/Components/ui/card";
@@ -25,7 +26,12 @@ import { ChevronLeft } from "lucide-react";
 import { FormEventHandler, useRef, useState } from "react";
 import { toast } from "sonner";
 
-export default function Edit({ auth, user }: PageProps<{ user: User }>) {
+export default function Edit({
+    auth,
+    user,
+    rekomendasi,
+    technician,
+}: PageProps<{ user: User; rekomendasi: any; technician: any }>) {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const { data, setData, errors, post, reset, processing } = useForm({
         name: user.name,
@@ -35,19 +41,6 @@ export default function Edit({ auth, user }: PageProps<{ user: User }>) {
         password_confirmation: "",
         photo: "",
     });
-
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-        console.log(data);
-        post(route("admin.users.update", user.id), {
-            onError: (err) => {
-                Object.values(err).forEach((element: any) => {
-                    toast.error(element);
-                });
-            },
-        });
-        reset("password", "password_confirmation");
-    };
 
     const [image, setImage] = useState(
         user.photo
@@ -113,6 +106,20 @@ export default function Edit({ auth, user }: PageProps<{ user: User }>) {
                             {user.name.substring(0, 17)}{" "}
                             {user.name.length > 17 && "..."}
                         </h1>
+                        <div className="hidden items-center gap-2 md:ml-auto md:flex">
+                            <Button asChild size="sm">
+                                <Link
+                                    href={route("orders.store")}
+                                    data={{
+                                        technician_id: technician.id,
+                                    }}
+                                    method="post"
+                                    as="button"
+                                >
+                                    Order
+                                </Link>
+                            </Button>
+                        </div>
                     </div>
                     <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
                         <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
@@ -144,7 +151,35 @@ export default function Edit({ auth, user }: PageProps<{ user: User }>) {
                                                 </small>
                                             )}
                                         </div>
-
+                                        <div className="grid gap-3">
+                                            <Label htmlFor="name">Skill </Label>
+                                            <Input
+                                                readOnly
+                                                id="name"
+                                                type="text"
+                                                className="w-full"
+                                                placeholder="..."
+                                                value={technician.skill.name}
+                                            />
+                                            {errors.name && (
+                                                <small className="text-red-500">
+                                                    {errors.name}
+                                                </small>
+                                            )}
+                                        </div>
+                                        <div className="grid gap-3">
+                                            <Label htmlFor="description">
+                                                Skill description
+                                            </Label>
+                                            <Textarea
+                                                readOnly
+                                                id="description"
+                                                className="min-h-32"
+                                                value={
+                                                    technician.skill_description
+                                                }
+                                            />
+                                        </div>
                                         <div className="grid gap-3">
                                             <Label htmlFor="description">
                                                 Address
@@ -164,6 +199,28 @@ export default function Edit({ auth, user }: PageProps<{ user: User }>) {
                                             {errors.address && (
                                                 <small className="text-red-500">
                                                     {errors.address}
+                                                </small>
+                                            )}
+                                        </div>
+                                        <div className="grid gap-3">
+                                            <Label htmlFor="name">Name </Label>
+                                            <Input
+                                                readOnly
+                                                id="name"
+                                                type="text"
+                                                className="w-full"
+                                                placeholder="..."
+                                                value={data.name}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "name",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                            {errors.name && (
+                                                <small className="text-red-500">
+                                                    {errors.name}
                                                 </small>
                                             )}
                                         </div>
@@ -216,6 +273,59 @@ export default function Edit({ auth, user }: PageProps<{ user: User }>) {
                                 </CardContent>
                             </Card>
                         </div>
+                    </div>
+                    <b>Rekomendasi</b>
+                    <div className="grid gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-3">
+                        {rekomendasi.data.map((data: any) => {
+                            return (
+                                <Card className="overflow-hidden">
+                                    <CardHeader>
+                                        <CardTitle>
+                                            {data.skill?.name}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {data.user.name}
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="grid gap-2">
+                                            <img
+                                                alt="Product image"
+                                                className="aspect-square w-full rounded-md object-cover"
+                                                height="300"
+                                                src={data.user?.photo}
+                                                width="300"
+                                            />
+                                            {data.skill_description}
+                                        </div>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button asChild className="w-100 me-2">
+                                            <Link
+                                                href={route("orders.store")}
+                                                data={{
+                                                    technician_id: data.id,
+                                                }}
+                                                method="post"
+                                                as="button"
+                                            >
+                                                Order
+                                            </Link>
+                                        </Button>
+                                        <Button asChild className="w-100">
+                                            <Link
+                                                href={route(
+                                                    "orders.show",
+                                                    data.user.id
+                                                )}
+                                            >
+                                                Detail
+                                            </Link>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            );
+                        })}
                     </div>
                 </div>
             </main>
