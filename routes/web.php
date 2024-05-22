@@ -6,6 +6,8 @@ use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Order;
+use App\Models\Technicians;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -25,20 +27,38 @@ Route::get('/dashboard', function () {
 
     if (auth()->user()->hasRole(['admin', 'super'])) {
         $users = User::role('user');
+        $technicians = User::role('technician');
+        $orders = Order::query();
         return Inertia::render('Dashboard', [
             "users" => [
                 "countGenderMale" => $users->where('gender', 'male')->count(),
                 "countGenderFemale" => User::where('gender', 'female')->count(),
                 "count" => $users->count(),
                 "countFromLastYear" => $users->whereYear('created_at', now()->format('Y'))->count(),
+            ],
+            "technicians" => [
+                "count" => $technicians->count(),
+                "countFromLastYear" => $technicians->whereYear('created_at', now()->format('Y'))->count(),
+            ],
+            "orders" => [
+                "count" => $orders->count(),
+                "countFromLastYear" => $orders->whereYear('created_at', now()->format('Y'))->count(),
             ]
         ]);
     }
     if (auth()->user()->hasRole('user')) {
-        return inertia("Customer/Dashboard");
+        $orders = Order::where('user_id', auth()->id());
+        return inertia("Customer/Dashboard", ["orders" => [
+            "count" => $orders->count(),
+            "countFromLastYear" => $orders->whereYear('created_at', now()->format('Y'))->count(),
+        ]]);
     }
     if (auth()->user()->hasRole('technician')) {
-        return inertia("Customer/Dashboard");
+        $orders = Order::where('technician_id', Technicians::where('user_id', auth()->id())->first()->id);
+        return inertia("Customer/Dashboard", ["orders" => [
+            "count" => $orders->count(),
+            "countFromLastYear" => $orders->whereYear('created_at', now()->format('Y'))->count(),
+        ]]);
     }
     Auth::guard('web')->logout();
 })->middleware(['auth', 'verified'])->name('dashboard');
