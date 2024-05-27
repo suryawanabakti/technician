@@ -56,7 +56,8 @@ class RegisteredUserController extends Controller
         if ($request->role == 'technician') {
             Technicians::create([
                 'user_id' => $user->id,
-                'skill_id' => $request->skill
+                'skill_id' => $request->skill,
+                'skill_description' => ''
             ]);
         }
 

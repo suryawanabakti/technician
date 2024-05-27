@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignUuid('skill_id')->references('id')->on('skills')->cascadeOnDelete();
-            $table->text('skill_description')->default('perbaiki suara hp, perbaiki lcd hp, ganti lcd iphone atau android');
+            $table->text('skill_description')->nullable();
             $table->timestamps();
         });
     }

@@ -46,6 +46,7 @@ import {
     MoreHorizontal,
     PlusCircle,
     Search,
+    Trash,
 } from "lucide-react";
 import { FormEventHandler, useState } from "react";
 
@@ -180,6 +181,9 @@ export default function Technicians({
                                     <TableHead className="hidden sm:table-cell">
                                         Deskripsi keahlian
                                     </TableHead>
+                                    <TableHead className="hidden sm:table-cell">
+                                        Action
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -210,7 +214,8 @@ export default function Technicians({
                                                         <Link
                                                             href={route(
                                                                 "admin.technicians.edit",
-                                                                technician.id
+                                                                technician.user
+                                                                    .id
                                                             )}
                                                         >
                                                             Edit
@@ -262,6 +267,35 @@ export default function Technicians({
                                                     );
                                                 }
                                             )}
+                                        </TableCell>
+                                        <TableCell className="flex gap-1">
+                                            <Button>
+                                                <Link
+                                                    href={route(
+                                                        "admin.technicians.edit",
+                                                        technician.id
+                                                    )}
+                                                >
+                                                    Edit
+                                                </Link>
+                                            </Button>
+                                            <Button asChild>
+                                                <Link
+                                                    href={route(
+                                                        "admin.technicians.destroy",
+                                                        technician.id
+                                                    )}
+                                                    method="delete"
+                                                    as="button"
+                                                    onBefore={() =>
+                                                        confirm(
+                                                            "Apakah anda yakin ?"
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </Link>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}

@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 import { PageProps } from "@/types";
 import { Textarea } from "@/Components/ui/textarea";
 import { Label } from "@/Components/ui/label";
@@ -15,6 +15,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/ui/select";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/Components/ui/card";
+import { Input } from "@/Components/ui/input";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -32,7 +40,7 @@ export default function UpdateProfileInformation({
     console.log(technician);
     const user = usePage<PageProps>().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, post, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
             email: user.email,
@@ -40,12 +48,26 @@ export default function UpdateProfileInformation({
             phone: user.phone,
             skill_id: technician?.skill_id,
             skill_description: technician?.skill_description,
+            photo: "",
         });
+
+    const [image, setImage] = useState(
+        user.photo
+            ? `/storage/${user.photo}`
+            : `https://static.vecteezy.com/system/resources/previews/003/715/527/non_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-vector.jpg`
+    );
+
+    const imageChange = (e: any) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setImage(URL.createObjectURL(e.target.files[0]));
+            setData("photo", e.target.files[0]);
+        }
+    };
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route("profile.update"));
+        post(route("profile.update"));
     };
 
     return (
@@ -61,6 +83,42 @@ export default function UpdateProfileInformation({
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
+                <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
+                    <Card className="overflow-hidden">
+                        <CardHeader>
+                            <CardTitle>User Image</CardTitle>
+                            <CardDescription>
+                                Click image if u want upload user
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid gap-2">
+                                <Label htmlFor="photo">
+                                    <img
+                                        alt="Product image"
+                                        className="aspect-square w-full rounded-md object-cover"
+                                        height="300"
+                                        src={image}
+                                        width="300"
+                                    />
+                                </Label>
+                                <Input
+                                    id="photo"
+                                    name="photo"
+                                    type="file"
+                                    hidden
+                                    onChange={imageChange}
+                                    accept="image/*"
+                                />
+                                {errors.photo && (
+                                    <small className="text-red-500">
+                                        {errors.photo}
+                                    </small>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
@@ -161,7 +219,6 @@ export default function UpdateProfileInformation({
                         className="mt-1 block w-full"
                         value={data.address}
                         onChange={(e) => setData("address", e.target.value)}
-                        isFocused
                         autoComplete="address"
                     />
 

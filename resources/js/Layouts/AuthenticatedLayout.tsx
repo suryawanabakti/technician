@@ -59,7 +59,7 @@ export default function Authenticated({
                             href="#"
                             className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
                         >
-                            <BoxIcon className="h-4 w-4 transition-all group-hover:scale-110" />
+                            <Pickaxe className="h-4 w-4 transition-all group-hover:scale-110" />
 
                             <span className="sr-only">Smart Inovasi Inc </span>
                         </Link>
@@ -303,6 +303,20 @@ export default function Authenticated({
                                     >
                                         <Users2 className="h-5 w-5" />
                                         Customer
+                                    </Link>
+                                    <Link
+                                        href={route("orders.create")}
+                                        className="flex items-center gap-4 px-2.5 text-foreground"
+                                    >
+                                        <Pickaxe className="h-5 w-5" />
+                                        Pesan tukang
+                                    </Link>
+                                    <Link
+                                        href={route("orders.index")}
+                                        className="flex items-center gap-4 px-2.5 text-foreground"
+                                    >
+                                        <ListOrderedIcon className="h-5 w-5" />
+                                        Pesananku
                                     </Link>
                                 </nav>
                             </SheetContent>

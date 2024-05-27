@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 
 class TechnicianController extends Controller
 {
+    public function edit(User $user)
+    {
+        return inertia("Admin/Users/Edit", ["user" => $user]);
+    }
     public function index(Request $request)
     {
         $technicians = Technicians::orderBy('updated_at', 'desc');

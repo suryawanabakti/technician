@@ -77,6 +77,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['role:admin|super'])->group(function () {
         Route::controller(\App\Http\Controllers\Admin\TechnicianController::class)->group(function () {
             Route::get('/admin/technicians', 'index')->name('admin.technicians.index');
+
+            Route::get('/admin/technicians/{user}/edit', 'edit')->name('admin.technicians.edit');
+
             Route::get('/admin/technicians/create', 'create')->name('admin.technicians.create');
             Route::post('/admin/technicians', 'store')->name('admin.technicians.store');
             Route::get('/admin/technicians/{technician}/edit', 'edit')->name('admin.technicians.edit');
@@ -100,7 +103,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/activities', [NotificationController::class, 'index'])->name('activities.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

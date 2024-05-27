@@ -12,7 +12,7 @@ class ApproveController extends Controller
     public function index()
     {
 
-        $orders = OrderResource::collection(Order::paginate(10));
+        $orders = OrderResource::collection(Order::where('status', 'accepted')->paginate(10));
 
         return inertia("Admin/Approve/Page", ["orders" => $orders]);
     }

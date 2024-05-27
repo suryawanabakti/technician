@@ -158,6 +158,9 @@ export default function Orders({
                                     <TableHead className="hidden sm:table-cell">
                                         Status
                                     </TableHead>
+                                    <TableHead className="hidden sm:table-cell">
+                                        Aksi
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -187,6 +190,18 @@ export default function Orders({
                                                 <Badge variant="outline">
                                                     {order.status}
                                                 </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger>
+                                                        Action
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent>
+                                                        <DropdownMenuItem>
+                                                            Batalkan
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
                                             </TableCell>
                                         </TableRow>
                                     );
