@@ -111,7 +111,7 @@ export default function Register({
                                             id="option-two"
                                         />
                                         <Label htmlFor="option-two">
-                                            Technician
+                                            Tukang
                                         </Label>
                                     </div>
                                 </RadioGroup>

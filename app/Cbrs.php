@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Exception;
+
 class Cbrs
 {
 
@@ -147,7 +149,14 @@ class Cbrs
             $dx1 += $dw1[$t] * $dw1[$t];
             $dx2 += $dw2[$t] * $dw2[$t];
         }
-
-        return round($dx / (sqrt($dx1) * sqrt($dx2)), 4);
+        try {
+            if ($dx == 0) {
+                return $dx;
+            }
+            $round =  round($dx / (sqrt($dx1) * sqrt($dx2)), 4);
+        } catch (Exception $e) {
+            $round = 1;
+        }
+        return $round;
     }
 }

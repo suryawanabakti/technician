@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    return redirect('/login');
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -24,11 +25,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-
     if (auth()->user()->hasRole(['admin', 'super'])) {
         $users = User::role('user');
         $technicians = User::role('technician');
         $orders = Order::query();
+
         return Inertia::render('Dashboard', [
             "users" => [
                 "countGenderMale" => $users->where('gender', 'male')->count(),
@@ -41,8 +42,9 @@ Route::get('/dashboard', function () {
                 "countFromLastYear" => $technicians->whereYear('created_at', now()->format('Y'))->count(),
             ],
             "orders" => [
-                "count" => $orders->count(),
-                "countFromLastYear" => $orders->whereYear('created_at', now()->format('Y'))->count(),
+                "count" => $orders->where('status', 'accepted')->count(),
+                "countProcess" => Order::where('status', 'process')->count(),
+                "countFromLastYear" => Order::whereYear('created_at', now()->format('Y'))->count(),
             ]
         ]);
     }

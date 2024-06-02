@@ -93,7 +93,7 @@ export default function Authenticated({
                                     <TooltipTrigger asChild>
                                         <Link
                                             href={route("admin.users.index")}
-                                            className={`flex h-9 w-9 items-center justify-center ${
+                                            className={`flex  h-9 w-9 items-center justify-center ${
                                                 route().current("admin.users*")
                                                     ? "bg-accent"
                                                     : ""
@@ -135,12 +135,12 @@ export default function Authenticated({
                                         >
                                             <Pickaxe className="h-5 w-5" />
                                             <span className="sr-only">
-                                                Technician
+                                                Tukang
                                             </span>
                                         </Link>
                                     </TooltipTrigger>
                                     <TooltipContent side="right">
-                                        Technician
+                                        Tukang
                                     </TooltipContent>
                                 </Tooltip>
                                 <Tooltip>
@@ -190,9 +190,7 @@ export default function Authenticated({
                                         }-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
                                     >
                                         <Pickaxe className="h-5 w-5" />
-                                        <span className="sr-only">
-                                            Technician
-                                        </span>
+                                        <span className="sr-only">Tukang</span>
                                     </Link>
                                 </TooltipTrigger>
                                 <TooltipContent side="right">

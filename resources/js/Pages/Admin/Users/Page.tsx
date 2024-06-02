@@ -45,6 +45,7 @@ import {
     ListFilter,
     MoreHorizontal,
     PlusCircle,
+    RefreshCwIcon,
     Search,
 } from "lucide-react";
 import { FormEventHandler, useState } from "react";
@@ -95,13 +96,13 @@ export default function Users({
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Users</BreadcrumbPage>
+                            <BreadcrumbPage>Customer</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
             }
         >
-            <Head title="Users" />
+            <Head title="Customer" />
 
             <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 ">
                 <div className="flex items-center">
@@ -143,6 +144,20 @@ export default function Users({
                                 Export
                             </span>
                         </Button>
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-7 gap-1"
+                            asChild
+                        >
+                            <Link href="/admin/users">
+                                {" "}
+                                <RefreshCwIcon className="h-3.5 w-3.5" />
+                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                    Refresh
+                                </span>
+                            </Link>
+                        </Button>
                         <Button size="sm" className="h-7 gap-1" asChild>
                             <Link href={route("admin.users.create")}>
                                 <PlusCircle className="h-3.5 w-3.5" />
@@ -155,7 +170,7 @@ export default function Users({
                 </div>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Users</CardTitle>
+                        <CardTitle>Customer</CardTitle>
                         <CardDescription>
                             {users.meta.from}-{users.meta.to} of{" "}
                             {users.meta.total} user
@@ -174,9 +189,7 @@ export default function Users({
                                     <TableHead className="hidden sm:table-cell">
                                         Email
                                     </TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Roles
-                                    </TableHead>
+
                                     <TableHead className="hidden sm:table-cell">
                                         Created At
                                     </TableHead>
@@ -244,19 +257,7 @@ export default function Users({
                                         <TableCell className="hidden sm:table-cell">
                                             {user.email}
                                         </TableCell>
-                                        <TableCell className="hidden sm:table-cell">
-                                            {user.roles.map((role: any) => {
-                                                return (
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="capitalize"
-                                                        key={role.id}
-                                                    >
-                                                        {role.name}
-                                                    </Badge>
-                                                );
-                                            })}
-                                        </TableCell>
+
                                         <TableCell className="hidden sm:table-cell">
                                             {user.created_at}
                                         </TableCell>

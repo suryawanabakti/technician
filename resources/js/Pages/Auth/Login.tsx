@@ -94,13 +94,13 @@ export default function Login({
                                 )}
                                 {processing ? "Please wait" : "Login"}
                             </Button>
-                            <Button
+                            {/* <Button
                                 variant="outline"
                                 className="w-full"
                                 disabled={processing}
                             >
                                 Login with Google
-                            </Button>
+                            </Button> */}
                         </form>
                         <div className="mt-4 text-center text-sm">
                             Don&apos;t have an account?{" "}

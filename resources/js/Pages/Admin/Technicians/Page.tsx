@@ -96,13 +96,13 @@ export default function Technicians({
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Technicians</BreadcrumbPage>
+                            <BreadcrumbPage>Tukang</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
             }
         >
-            <Head title="Technicians" />
+            <Head title="Tukang" />
 
             <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 ">
                 <div className="flex items-center">
@@ -156,7 +156,7 @@ export default function Technicians({
                 </div>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Technicians</CardTitle>
+                        <CardTitle>Tukang</CardTitle>
                         <CardDescription>
                             {technicians.meta.from}-{technicians.meta.to} of{" "}
                             {technicians.meta.total} user
@@ -180,9 +180,6 @@ export default function Technicians({
                                     </TableHead>
                                     <TableHead className="hidden sm:table-cell">
                                         Deskripsi keahlian
-                                    </TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Action
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -267,35 +264,6 @@ export default function Technicians({
                                                     );
                                                 }
                                             )}
-                                        </TableCell>
-                                        <TableCell className="flex gap-1">
-                                            <Button>
-                                                <Link
-                                                    href={route(
-                                                        "admin.technicians.edit",
-                                                        technician.id
-                                                    )}
-                                                >
-                                                    Edit
-                                                </Link>
-                                            </Button>
-                                            <Button asChild>
-                                                <Link
-                                                    href={route(
-                                                        "admin.technicians.destroy",
-                                                        technician.id
-                                                    )}
-                                                    method="delete"
-                                                    as="button"
-                                                    onBefore={() =>
-                                                        confirm(
-                                                            "Apakah anda yakin ?"
-                                                        )
-                                                    }
-                                                >
-                                                    Delete
-                                                </Link>
-                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
