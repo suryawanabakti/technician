@@ -104,181 +104,176 @@ export default function Users({
         >
             <Head title="Customer" />
 
-            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 ">
-                <div className="flex items-center">
-                    <div className="ml-auto flex items-center gap-2">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-7 gap-1"
-                                >
-                                    <ListFilter className="h-3.5 w-3.5" />
-                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                        Filter
-                                    </span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuCheckboxItem checked>
-                                    Active
-                                </DropdownMenuCheckboxItem>
-                                <DropdownMenuCheckboxItem>
-                                    Draft
-                                </DropdownMenuCheckboxItem>
-                                <DropdownMenuCheckboxItem>
-                                    Archived
-                                </DropdownMenuCheckboxItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-7 gap-1"
-                        >
-                            <File className="h-3.5 w-3.5" />
+            <div className="flex items-center">
+                <div className="ml-auto flex items-center gap-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-7 gap-1"
+                            >
+                                <ListFilter className="h-3.5 w-3.5" />
+                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                    Filter
+                                </span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuCheckboxItem checked>
+                                Active
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem>
+                                Draft
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem>
+                                Archived
+                            </DropdownMenuCheckboxItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <Button size="sm" variant="outline" className="h-7 gap-1">
+                        <File className="h-3.5 w-3.5" />
+                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                            Export
+                        </span>
+                    </Button>
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 gap-1"
+                        asChild
+                    >
+                        <Link href="/admin/users">
+                            {" "}
+                            <RefreshCwIcon className="h-3.5 w-3.5" />
                             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                Export
+                                Refresh
                             </span>
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-7 gap-1"
-                            asChild
-                        >
-                            <Link href="/admin/users">
-                                {" "}
-                                <RefreshCwIcon className="h-3.5 w-3.5" />
-                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                    Refresh
-                                </span>
-                            </Link>
-                        </Button>
-                        <Button size="sm" className="h-7 gap-1" asChild>
-                            <Link href={route("admin.users.create")}>
-                                <PlusCircle className="h-3.5 w-3.5" />
-                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                    Add User
-                                </span>
-                            </Link>
-                        </Button>
-                    </div>
+                        </Link>
+                    </Button>
+                    <Button size="sm" className="h-7 gap-1" asChild>
+                        <Link href={route("admin.users.create")}>
+                            <PlusCircle className="h-3.5 w-3.5" />
+                            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                Add User
+                            </span>
+                        </Link>
+                    </Button>
                 </div>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Customer</CardTitle>
-                        <CardDescription>
-                            {users.meta.from}-{users.meta.to} of{" "}
-                            {users.meta.total} user
-                        </CardDescription>
-                    </CardHeader>
+            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Customer</CardTitle>
+                    <CardDescription>
+                        {users.meta.from}-{users.meta.to} of {users.meta.total}{" "}
+                        user
+                    </CardDescription>
+                </CardHeader>
 
-                    <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className=""></TableHead>
-                                    <TableHead className="hidden w-[100px] sm:table-cell">
-                                        <span className="sr-only">Image</span>
-                                    </TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Email
-                                    </TableHead>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className=""></TableHead>
+                                <TableHead className="hidden w-[100px] sm:table-cell">
+                                    <span className="sr-only">Image</span>
+                                </TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Email
+                                </TableHead>
 
-                                    <TableHead className="hidden sm:table-cell">
-                                        Created At
-                                    </TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Created At
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {users.data.map((user: User) => (
+                                <TableRow
+                                    key={user.id}
+                                    className=" hover:bg-slate-200"
+                                >
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    aria-haspopup="true"
+                                                    size="icon"
+                                                    variant="ghost"
+                                                >
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                    <span className="sr-only">
+                                                        Toggle menu
+                                                    </span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="start">
+                                                <DropdownMenuLabel>
+                                                    Actions
+                                                </DropdownMenuLabel>
+                                                <DropdownMenuItem asChild>
+                                                    <Link
+                                                        href={route(
+                                                            "admin.users.edit",
+                                                            user.id
+                                                        )}
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() =>
+                                                        handleShowDeleteDialog(
+                                                            true,
+                                                            user
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                    <TableCell>
+                                        <img
+                                            alt="User image"
+                                            className="aspect-square rounded-md object-cover"
+                                            height="64"
+                                            src={user.photo}
+                                            width="64"
+                                        />
+                                    </TableCell>
+                                    <TableCell className="font-medium">
+                                        {user.name}
+                                    </TableCell>
+                                    <TableCell className="hidden sm:table-cell">
+                                        {user.email}
+                                    </TableCell>
+
+                                    <TableCell className="hidden sm:table-cell">
+                                        {user.created_at}
+                                    </TableCell>
                                 </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {users.data.map((user: User) => (
-                                    <TableRow
-                                        key={user.id}
-                                        className=" hover:bg-slate-200"
-                                    >
-                                        <TableCell>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        aria-haspopup="true"
-                                                        size="icon"
-                                                        variant="ghost"
-                                                    >
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                        <span className="sr-only">
-                                                            Toggle menu
-                                                        </span>
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="start">
-                                                    <DropdownMenuLabel>
-                                                        Actions
-                                                    </DropdownMenuLabel>
-                                                    <DropdownMenuItem asChild>
-                                                        <Link
-                                                            href={route(
-                                                                "admin.users.edit",
-                                                                user.id
-                                                            )}
-                                                        >
-                                                            Edit
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() =>
-                                                            handleShowDeleteDialog(
-                                                                true,
-                                                                user
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                        <TableCell>
-                                            <img
-                                                alt="User image"
-                                                className="aspect-square rounded-md object-cover"
-                                                height="64"
-                                                src={user.photo}
-                                                width="64"
-                                            />
-                                        </TableCell>
-                                        <TableCell className="font-medium">
-                                            {user.name}
-                                        </TableCell>
-                                        <TableCell className="hidden sm:table-cell">
-                                            {user.email}
-                                        </TableCell>
-
-                                        <TableCell className="hidden sm:table-cell">
-                                            {user.created_at}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                    <CardFooter>
-                        <SimplePagination
-                            links={users.links}
-                            search={search}
-                            currentPage={users.meta.current_page}
-                        />
-                        {/* <PaginationComponent
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+                <CardFooter>
+                    <SimplePagination
+                        links={users.links}
+                        search={search}
+                        currentPage={users.meta.current_page}
+                    />
+                    {/* <PaginationComponent
                                 links={users.meta.links}
                                 currentPage={users.meta.current_page}
                             /> */}
-                    </CardFooter>
-                </Card>
-            </main>
+                </CardFooter>
+            </Card>
+
             {user && (
                 <AlertDelete
                     user={user}

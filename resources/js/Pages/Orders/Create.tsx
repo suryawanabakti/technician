@@ -63,82 +63,30 @@ export default function Create({
         >
             <Head title="Order" />
 
-            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                <center>
-                    <form
-                        onSubmit={handleSearch}
-                        className="flex w-full max-w-sm items-center space-x-2"
-                    >
-                        <Input
-                            type="search"
-                            value={data.search}
-                            onChange={(e) => setData("search", e.target.value)}
-                            placeholder="Cari tukang berdasarkan nama/keahliannya"
-                        />
-                        <Button type="submit">
-                            <Search />
-                        </Button>
-                    </form>
-                </center>
-                {rekomendasi.data.length > 0 && <b>Rekomendasi tukang</b>}
-                {rekomendasi.data.length > 0 && (
-                    <div className="grid gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-4">
-                        {rekomendasi.data.map((data: any) => {
-                            return (
-                                <Card className="overflow-hidden">
-                                    <CardHeader>
-                                        <CardTitle>
-                                            {data.skill?.name}
-                                        </CardTitle>
-                                        <CardDescription>
-                                            {data.user.name}
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="grid gap-2">
-                                            <img
-                                                alt="Product image"
-                                                className="aspect-square w-full rounded-md object-cover"
-                                                height="300"
-                                                src={data.user?.photo}
-                                                width="300"
-                                            />
-                                            {data.skill_description}
-                                        </div>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Button asChild className="w-100 me-2">
-                                            <Link
-                                                href={route("orders.store")}
-                                                data={{
-                                                    technician_id: data.id,
-                                                }}
-                                                method="post"
-                                                as="button"
-                                            >
-                                                Order
-                                            </Link>
-                                        </Button>
-                                        <Button asChild className="w-100">
-                                            <Link
-                                                href={route(
-                                                    "orders.show",
-                                                    data.user.id
-                                                )}
-                                            >
-                                                Detail
-                                            </Link>
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            );
-                        })}
-                    </div>
-                )}
+            <center>
+                <form
+                    onSubmit={handleSearch}
+                    className="flex w-full max-w-sm items-center space-x-2"
+                >
+                    <Input
+                        type="search"
+                        value={data.search}
+                        onChange={(e) => setData("search", e.target.value)}
+                        placeholder="Cari tukang berdasarkan nama/keahliannya"
+                    />
+                    <Button type="submit">
+                        <Search />
+                    </Button>
+                </form>
+            </center>
+            {rekomendasi.data.length > 0 && <b>Rekomendasi tukang</b>}
 
-                <b>Teknisi</b>
-                <div className="grid gap-4 md:grid-cols-3 md:gap-8 lg:grid-cols-4">
-                    {technicians.data.map((data: any) => {
+            {rekomendasi.data.length == 0 && search && search != "tukang" && (
+                <center className="text-red-500"> Data tidak ditemukan</center>
+            )}
+            {rekomendasi.data.length > 0 && (
+                <div className="grid gap-4 md:grid-cols-4 md:gap-8 lg:grid-cols-3">
+                    {rekomendasi.data.map((data: any) => {
                         return (
                             <Card className="overflow-hidden">
                                 <CardHeader>
@@ -187,12 +135,64 @@ export default function Create({
                         );
                     })}
                 </div>
-                <SimplePagination
-                    links={technicians.links}
-                    search={search}
-                    currentPage={technicians.meta.current_page}
-                />
-            </main>
+            )}
+
+            <b>Tukang</b>
+            <div className="grid gap-4 md:grid-cols-3 md:gap-8 lg:grid-cols-3">
+                {technicians.data.map((data: any) => {
+                    return (
+                        <Card className="overflow-hidden">
+                            <CardHeader>
+                                <CardTitle>{data.skill?.name}</CardTitle>
+                                <CardDescription>
+                                    {data.user.name}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid gap-2">
+                                    <img
+                                        alt="Product image"
+                                        className="aspect-square w-full rounded-md object-cover"
+                                        height="300"
+                                        src={data.user?.photo}
+                                        width="300"
+                                    />
+                                    {data.skill_description}
+                                </div>
+                            </CardContent>
+                            <CardFooter>
+                                <Button asChild className="w-100 me-2">
+                                    <Link
+                                        href={route("orders.store")}
+                                        data={{
+                                            technician_id: data.id,
+                                        }}
+                                        method="post"
+                                        as="button"
+                                    >
+                                        Order
+                                    </Link>
+                                </Button>
+                                <Button asChild className="w-100">
+                                    <Link
+                                        href={route(
+                                            "orders.show",
+                                            data.user.id
+                                        )}
+                                    >
+                                        Detail
+                                    </Link>
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    );
+                })}
+            </div>
+            <SimplePagination
+                links={technicians.links}
+                search={search}
+                currentPage={technicians.meta.current_page}
+            />
         </AuthenticatedLayout>
     );
 }

@@ -104,10 +104,9 @@ export default function Technicians({
         >
             <Head title="Tukang" />
 
-            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 ">
-                <div className="flex items-center">
-                    <div className="ml-auto flex items-center gap-2">
-                        {/* <DropdownMenu>
+            <div className="flex items-center">
+                <div className="ml-auto flex items-center gap-2">
+                    {/* <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="outline"
@@ -134,17 +133,13 @@ export default function Technicians({
                                 </DropdownMenuCheckboxItem>
                             </DropdownMenuContent>
                         </DropdownMenu> */}
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-7 gap-1"
-                        >
-                            <File className="h-3.5 w-3.5" />
-                            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                Export
-                            </span>
-                        </Button>
-                        {/* <Button size="sm" className="h-7 gap-1" asChild>
+                    <Button size="sm" variant="outline" className="h-7 gap-1">
+                        <File className="h-3.5 w-3.5" />
+                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                            Export
+                        </span>
+                    </Button>
+                    {/* <Button size="sm" className="h-7 gap-1" asChild>
                             <Link href={route("admin.technicians.create")}>
                                 <PlusCircle className="h-3.5 w-3.5" />
                                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
@@ -152,137 +147,134 @@ export default function Technicians({
                                 </span>
                             </Link>
                         </Button> */}
-                    </div>
                 </div>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Tukang</CardTitle>
-                        <CardDescription>
-                            {technicians.meta.from}-{technicians.meta.to} of{" "}
-                            {technicians.meta.total} user
-                        </CardDescription>
-                    </CardHeader>
+            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Tukang</CardTitle>
+                    <CardDescription>
+                        {technicians.meta.from}-{technicians.meta.to} of{" "}
+                        {technicians.meta.total} user
+                    </CardDescription>
+                </CardHeader>
 
-                    <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className=""></TableHead>
-                                    <TableHead className="hidden w-[100px] sm:table-cell">
-                                        <span className="sr-only">Image</span>
-                                    </TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Email
-                                    </TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Keahlian
-                                    </TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Deskripsi keahlian
-                                    </TableHead>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className=""></TableHead>
+                                <TableHead className="hidden w-[100px] sm:table-cell">
+                                    <span className="sr-only">Image</span>
+                                </TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Email
+                                </TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Keahlian
+                                </TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Deskripsi keahlian
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {technicians.data.map((technician: any) => (
+                                <TableRow
+                                    key={technician.id}
+                                    className=" hover:bg-slate-200"
+                                >
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    aria-haspopup="true"
+                                                    size="icon"
+                                                    variant="ghost"
+                                                >
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                    <span className="sr-only">
+                                                        Toggle menu
+                                                    </span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="start">
+                                                <DropdownMenuLabel>
+                                                    Actions
+                                                </DropdownMenuLabel>
+                                                <DropdownMenuItem asChild>
+                                                    <Link
+                                                        href={route(
+                                                            "admin.technicians.edit",
+                                                            technician.user.id
+                                                        )}
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() =>
+                                                        handleShowDeleteDialog(
+                                                            true,
+                                                            technician
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                    <TableCell>
+                                        <img
+                                            alt="User image"
+                                            className="aspect-square rounded-md object-cover"
+                                            height="64"
+                                            src={technician.user.photo}
+                                            width="64"
+                                        />
+                                    </TableCell>
+                                    <TableCell className="font-medium">
+                                        {technician.user.name}
+                                    </TableCell>
+                                    <TableCell className="hidden sm:table-cell">
+                                        {technician.user.email}
+                                    </TableCell>
+                                    <TableCell className="hidden sm:table-cell">
+                                        {technician.skill?.name}
+                                    </TableCell>
+                                    <TableCell className="hidden sm:table-cell">
+                                        {technician.skill_description}
+                                        {technician.skills.map((skill: any) => {
+                                            return (
+                                                <Badge
+                                                    variant="outline"
+                                                    className="capitalize"
+                                                    key={skill.skill.id}
+                                                >
+                                                    {skill.skill.name}
+                                                </Badge>
+                                            );
+                                        })}
+                                    </TableCell>
                                 </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {technicians.data.map((technician: any) => (
-                                    <TableRow
-                                        key={technician.id}
-                                        className=" hover:bg-slate-200"
-                                    >
-                                        <TableCell>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        aria-haspopup="true"
-                                                        size="icon"
-                                                        variant="ghost"
-                                                    >
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                        <span className="sr-only">
-                                                            Toggle menu
-                                                        </span>
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="start">
-                                                    <DropdownMenuLabel>
-                                                        Actions
-                                                    </DropdownMenuLabel>
-                                                    <DropdownMenuItem asChild>
-                                                        <Link
-                                                            href={route(
-                                                                "admin.technicians.edit",
-                                                                technician.user
-                                                                    .id
-                                                            )}
-                                                        >
-                                                            Edit
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() =>
-                                                            handleShowDeleteDialog(
-                                                                true,
-                                                                technician
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                        <TableCell>
-                                            <img
-                                                alt="User image"
-                                                className="aspect-square rounded-md object-cover"
-                                                height="64"
-                                                src={technician.user.photo}
-                                                width="64"
-                                            />
-                                        </TableCell>
-                                        <TableCell className="font-medium">
-                                            {technician.user.name}
-                                        </TableCell>
-                                        <TableCell className="hidden sm:table-cell">
-                                            {technician.user.email}
-                                        </TableCell>
-                                        <TableCell className="hidden sm:table-cell">
-                                            {technician.skill?.name}
-                                        </TableCell>
-                                        <TableCell className="hidden sm:table-cell">
-                                            {technician.skill_description}
-                                            {technician.skills.map(
-                                                (skill: any) => {
-                                                    return (
-                                                        <Badge
-                                                            variant="outline"
-                                                            className="capitalize"
-                                                            key={skill.skill.id}
-                                                        >
-                                                            {skill.skill.name}
-                                                        </Badge>
-                                                    );
-                                                }
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                    <CardFooter>
-                        <SimplePagination
-                            links={technicians.links}
-                            search={search}
-                            currentPage={technicians.meta.current_page}
-                        />
-                        {/* <PaginationComponent
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+                <CardFooter>
+                    <SimplePagination
+                        links={technicians.links}
+                        search={search}
+                        currentPage={technicians.meta.current_page}
+                    />
+                    {/* <PaginationComponent
                                 links={technicians.meta.links}
                                 currentPage={technicians.meta.current_page}
                             /> */}
-                    </CardFooter>
-                </Card>
-            </main>
+                </CardFooter>
+            </Card>
+
             {user && (
                 <AlertDelete
                     user={user}

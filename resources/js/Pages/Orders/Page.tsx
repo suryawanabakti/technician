@@ -103,125 +103,123 @@ export default function Orders({
         >
             <Head title="Order" />
 
-            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 ">
-                <div className="flex items-center">
-                    <div className="ml-auto flex items-center gap-2">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-7 gap-1"
-                                >
-                                    <ListFilter className="h-3.5 w-3.5" />
-                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                        Filter
-                                    </span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuCheckboxItem checked>
-                                    Process
-                                </DropdownMenuCheckboxItem>
-                                <DropdownMenuCheckboxItem checked>
-                                    Accepted
-                                </DropdownMenuCheckboxItem>
-                                <DropdownMenuCheckboxItem checked>
-                                    Decline
-                                </DropdownMenuCheckboxItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
+            <div className="flex items-center">
+                <div className="ml-auto flex items-center gap-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-7 gap-1"
+                            >
+                                <ListFilter className="h-3.5 w-3.5" />
+                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                    Filter
+                                </span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuCheckboxItem checked>
+                                Process
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem checked>
+                                Accepted
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem checked>
+                                Decline
+                            </DropdownMenuCheckboxItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Order</CardTitle>
-                        <CardDescription>
-                            {orders.meta?.from}-{orders.meta?.to} of{" "}
-                            {orders.meta?.total} order.
-                        </CardDescription>
-                    </CardHeader>
+            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Order</CardTitle>
+                    <CardDescription>
+                        {orders.meta?.from}-{orders.meta?.to} of{" "}
+                        {orders.meta?.total} order.
+                    </CardDescription>
+                </CardHeader>
 
-                    <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="hidden w-[100px] sm:table-cell">
-                                        <span className="sr-only">Image</span>
-                                    </TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Keahlian
-                                    </TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Status
-                                    </TableHead>
-                                    <TableHead className="hidden sm:table-cell">
-                                        Aksi
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {orders.data.map((order: any) => {
-                                    return (
-                                        <TableRow>
-                                            <TableCell>
-                                                {" "}
-                                                <img
-                                                    alt="User image"
-                                                    className="aspect-square rounded-md object-cover"
-                                                    height="64"
-                                                    src={
-                                                        order.technician.user
-                                                            .photo
-                                                    }
-                                                    width="64"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                {order.technician.user.name}
-                                            </TableCell>
-                                            <TableCell>
-                                                {order.technician.skill.name}
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant="outline">
-                                                    {order.status}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger>
-                                                        Action
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent>
-                                                        <DropdownMenuItem>
-                                                            Batalkan
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                    <CardFooter>
-                        <SimplePagination
-                            links={orders.links}
-                            search={search}
-                            currentPage={orders.meta?.current_page}
-                        />
-                        {/* <PaginationComponent
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="hidden w-[100px] sm:table-cell">
+                                    <span className="sr-only">Image</span>
+                                </TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Keahlian
+                                </TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Status
+                                </TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Aksi
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {orders.data.map((order: any) => {
+                                return (
+                                    <TableRow>
+                                        <TableCell>
+                                            {" "}
+                                            <img
+                                                alt="User image"
+                                                className="aspect-square rounded-md object-cover"
+                                                height="64"
+                                                src={
+                                                    order.technician.user.photo
+                                                }
+                                                width="64"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {order.technician.user.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {order.technician.skill.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge variant="outline">
+                                                {order.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger>
+                                                    Action
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent>
+                                                    <DropdownMenuItem>
+                                                        Batalkan
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+                <CardFooter>
+                    <SimplePagination
+                        links={orders.links}
+                        search={search}
+                        currentPage={orders.meta?.current_page}
+                    />
+                    {/* <PaginationComponent
                                 links={orders.meta.links}
                                 currentPage={orders.meta.current_page}
                             /> */}
-                    </CardFooter>
-                </Card>
-            </main>
+                </CardFooter>
+            </Card>
+
             {user && (
                 <AlertDelete
                     user={user}

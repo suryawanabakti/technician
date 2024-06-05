@@ -94,7 +94,12 @@ class OrderController extends Controller
 
             array_shift($r);
             $rekomendasi = [];
+
+
             foreach ($r as $k => $row) {
+                if ($row == 0) {
+                    break;
+                }
                 $rekomendasi[] =
                     Technicians::where('id', $k)->first();
             }
