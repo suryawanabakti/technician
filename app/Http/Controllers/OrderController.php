@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cbrs;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\TechnicianResource;
+use App\Models\ClickDetail;
 use App\Models\Order;
 use App\Models\Technicians;
 use App\Models\User;
@@ -12,24 +13,49 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function destroy(Order $order)
+    {
+        $order->delete();
+        return back();
+    }
     public function show(User $user)
     {
 
         $orderSmiliarty = Technicians::where('user_id', $user->id)->first();
+
+        $clickDetail = ClickDetail::where('user_id', auth()->id())->first();
+        $implode = "";
+        if (!empty($clickDetail)) {
+            $skillSebelumnya = $clickDetail->text;
+            $implode = $skillSebelumnya . " " . $orderSmiliarty->skill->name;
+            $clickDetail->update(["text" => $implode]);
+        } else {
+            $clickDetail = ClickDetail::create([
+                'user_id' => auth()->id(),
+                'text' => ""
+            ]);
+            $skillSebelumnya = $clickDetail->text;
+            $implode = $skillSebelumnya . " " . $orderSmiliarty->skill->name;
+            $clickDetail->update(["text" => $implode]);
+        }
+
         $data = [];
 
         foreach (Technicians::all() as $row) {
             $data[$row->id] = $this->pre_process($row->skill->name . ' ' . $row->skill_description);
         }
+        $data["search"] = $implode;
         $cbrs = new Cbrs();
         $cbrs->create_index($data);
         $cbrs->idf();
         $w = $cbrs->weight();
-        $r = $cbrs->similarity($orderSmiliarty->id);
+        $r = $cbrs->similarity("search");
         $n = 8;
         foreach ($r as $k => $row) {
-            $rekomendasi[] =
-                Technicians::where('id', $k)->first();
+            $tech = Technicians::where('id', $k)->first();
+            if (!empty($tech)) {
+                $rekomendasi[] = $tech;
+            }
         }
         $rekomendasi =   TechnicianResource::collection(collect($rekomendasi ?? [])->take(8));
         $technician = Technicians::where('user_id', $user->id)->first();
@@ -58,21 +84,29 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $query = Technicians::query();
-        $orderSmiliarty = Order::where('user_id', auth()->id())->orderBy('created_at', 'desc')->first();
-        if (!empty($orderSmiliarty)) {
+        $orderSmiliarty = Order::where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
+        if ($orderSmiliarty->count() > 0) {
+            $implode = "";
+            foreach ($orderSmiliarty as $order) {
+                $implode .= $order->technician->skill->name . " ";
+            }
+
             $data = [];
             foreach (Technicians::all() as $row) {
                 $data[$row->id] = $this->pre_process($row->skill->name . ' ' . $row->skill_description);
             }
+            $data["search"] = $implode;
             $cbrs = new Cbrs();
             $cbrs->create_index($data);
             $cbrs->idf();
             $w = $cbrs->weight();
-            $r = $cbrs->similarity($orderSmiliarty->technician_id);
+            $r = $cbrs->similarity("search");
             $n = 8;
             foreach ($r as $k => $row) {
-                $rekomendasi[] =
-                    Technicians::where('id', $k)->first();
+                $tech = Technicians::where('id', $k)->first();
+                if (!empty($tech)) {
+                    $rekomendasi[] = $tech;
+                }
             }
         }
 

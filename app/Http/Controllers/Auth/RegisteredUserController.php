@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClickDetail;
 use App\Models\Skill;
 use App\Models\Technicians;
 use App\Models\User;
@@ -58,6 +59,11 @@ class RegisteredUserController extends Controller
                 'user_id' => $user->id,
                 'skill_id' => $request->skill,
                 'skill_description' => ''
+            ]);
+        } else {
+            ClickDetail::create([
+                'user_id' => $user->id,
+                'text' => ""
             ]);
         }
 

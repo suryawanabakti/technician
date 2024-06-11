@@ -23,7 +23,6 @@ class TechnicianController extends Controller
         if ($request->search) {
             $technicians->where('skill_description', 'LIKE', "%{$request->search}%");
         }
-
         return inertia("Admin/Technicians/Page", ["technicians" => TechnicianResource::collection($technicians->paginate(5)), "search" => $request->search ?? null]);
     }
 

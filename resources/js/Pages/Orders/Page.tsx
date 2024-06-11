@@ -195,8 +195,17 @@ export default function Orders({
                                                     Action
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent>
-                                                    <DropdownMenuItem>
-                                                        Batalkan
+                                                    <DropdownMenuItem asChild>
+                                                        <Link
+                                                            href={route(
+                                                                "orders.destroy",
+                                                                order.id
+                                                            )}
+                                                            as="button"
+                                                            method="delete"
+                                                        >
+                                                            Hapus
+                                                        </Link>
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
