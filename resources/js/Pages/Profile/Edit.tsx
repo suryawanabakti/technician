@@ -12,6 +12,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/Components/ui/breadcrumb";
+import ResetPencarian from "./Partials/ResetPencarian";
 
 export default function Edit({
     auth,
@@ -62,6 +63,10 @@ export default function Edit({
 
                 <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <DeleteUserForm className="max-w-xl" />
+                </div>
+
+                <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <ResetPencarian className="max-w-xl" />
                 </div>
             </div>
         </AuthenticatedLayout>

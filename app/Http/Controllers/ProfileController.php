@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\ClickDetail;
 use App\Models\Skill;
 use App\Models\Technicians;
 use App\Models\User;
@@ -76,5 +77,11 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function resetPencarian()
+    {
+        ClickDetail::where('user_id', auth()->id())->update(['text' => '']);
+        return back();
     }
 }
