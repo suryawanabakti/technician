@@ -31,7 +31,13 @@ export default function Edit({
     user,
     rekomendasi,
     technician,
-}: PageProps<{ user: User; rekomendasi: any; technician: any }>) {
+    jumlahOrderTukang,
+}: PageProps<{
+    user: User;
+    rekomendasi: any;
+    technician: any;
+    jumlahOrderTukang: any;
+}>) {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const { data, setData, errors, post, reset, processing } = useForm({
         name: user.name,
@@ -269,6 +275,32 @@ export default function Edit({
                                                 width="300"
                                             />
                                         </Label>
+                                    </div>
+                                    <div className="grid gap-2 mt-5">
+                                        <Label htmlFor="name">
+                                            Jumlah Dikunjungi{" "}
+                                        </Label>
+                                        <Input
+                                            readOnly
+                                            id="name"
+                                            type="text"
+                                            className="w-full"
+                                            placeholder="..."
+                                            value={technician.visit + 1}
+                                        />
+                                    </div>
+                                    <div className="grid gap-2 mt-5">
+                                        <Label htmlFor="name">
+                                            Jumlah Pesanan{" "}
+                                        </Label>
+                                        <Input
+                                            readOnly
+                                            id="name"
+                                            type="text"
+                                            className="w-full"
+                                            placeholder="..."
+                                            value={jumlahOrderTukang}
+                                        />
                                     </div>
                                 </CardContent>
                             </Card>

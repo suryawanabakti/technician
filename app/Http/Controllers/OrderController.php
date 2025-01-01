@@ -59,7 +59,10 @@ class OrderController extends Controller
         }
         $rekomendasi =   TechnicianResource::collection(collect($rekomendasi ?? [])->take(8));
         $technician = Technicians::where('user_id', $user->id)->first();
-        return inertia("Orders/Show", ["user" => $user, "rekomendasi" => $rekomendasi, "technician" => $technician]);
+        $jumlahOrderTukang = Order::where('technician_id', $technician->id)->count();
+        Technicians::where('user_id', $user->id)->increment("visit");
+
+        return inertia("Orders/Show", ["user" => $user, "rekomendasi" => $rekomendasi, "technician" => $technician, "jumlahOrderTukang" => $jumlahOrderTukang]);
     }
     public function index()
     {
@@ -85,6 +88,7 @@ class OrderController extends Controller
     {
         $query = Technicians::query();
         $orderSmiliarty = Order::where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
+
         if ($orderSmiliarty->count() > 0) {
             $implode = "";
             foreach ($orderSmiliarty as $order) {
@@ -99,9 +103,9 @@ class OrderController extends Controller
             $cbrs = new Cbrs();
             $cbrs->create_index($data);
             $cbrs->idf();
-            $w = $cbrs->weight();
+
             $r = $cbrs->similarity("search");
-            $n = 8;
+
             foreach ($r as $k => $row) {
                 $tech = Technicians::where('id', $k)->first();
                 if (!empty($tech)) {
